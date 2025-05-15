@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 	// "friends-forever/internal/db"
-	"friends-forever/internal/handlers"
+	"friends-forever/web/handlers"
 	"github.com/go-chi/chi/v5"
 )
 

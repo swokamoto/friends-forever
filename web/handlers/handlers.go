@@ -8,7 +8,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-var tmpl = template.Must(template.ParseFiles("templates/index.html"))
+var tmpl = template.Must(template.ParseFiles("web/templates/index.html"))
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	err := tmpl.Execute(w, nil)
