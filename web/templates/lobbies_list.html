@@ -1,0 +1,26 @@
+<div id="lobbies-list"
+     hx-get="/lobbies"
+     hx-trigger="every 2s">
+    <ul>
+        {{range .Lobbies}}
+            <li>
+                Game by {{.Host}} ({{len .Players}} players):
+                <ul>
+                    {{range $key, $p := .Players}}
+                        {{if $p}}
+                            <li>{{$p.Name}}</li>
+                        {{end}}
+                    {{end}}
+                </ul>
+                <button 
+                    hx-get="/join-game?id={{.ID}}&player={{$.PlayerName}}" 
+                    hx-swap="none"
+                    {{if not $.PlayerName}}disabled{{end}}>
+                    Join
+                </button>
+            </li>
+        {{else}}
+            <li>No games available.</li>
+        {{end}}
+    </ul>
+</div>

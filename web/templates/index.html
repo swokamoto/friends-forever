@@ -5,18 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Multiplayer Web Game</title>
     <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 </head>
 <body>
     <header>
-        <h1>Welcome to the Multiplayer Web Game!</h1>
+        <h1>Friends Forever!</h1>
     </header>
-    <main>
-        <div id="game-container">
-            <!-- Game content will be dynamically loaded here -->
-        </div>
-        <div id="response"></div>
-        <button id="helloButton">hello</button>
-    </main>
+    <p>Game State: {{.GameState}}</p>
+    <h1>Hello, {{.PlayerName}}</h1>
+
+    {{if not .PlayerName}}
+    <form 
+        hx-post="/login" 
+        hx-target="body" 
+        hx-swap="outerHTML"
+        style="margin-bottom: 1em;"
+    >
+        <input type="text" name="name" placeholder="Enter your name" required>
+        <button type="submit">Login</button>
+    </form>
+    {{end}}
+
+    <button 
+        id="new-game-btn"
+        hx-get="/start-game?player={{.PlayerName}}"
+        hx-swap="none"
+        {{if not .PlayerName}}disabled{{end}}
+    >
+        New Game
+    </button>
+
+    <div id="lobbies-list"
+        hx-get="/lobbies"
+        hx-trigger="load, every 5s">
+        <ul>
+            {{range .Lobbies}}
+                <li>
+                    Game by {{.Host}} ({{len .Players}} players):
+                    <ul>
+                        {{range $p := .Players}}
+                            <li>{{$p.Name}}</li>
+                        {{end}}
+                    </ul>
+                    <button 
+                        hx-get="/join-game?id={{.ID}}&player={{$.PlayerName}}" 
+                        hx-target="#lobbies-list"
+                        hx-swap="outerHTML"
+                        {{if not $.PlayerName}}disabled{{end}}>
+                        Join
+                    </button>
+                </li>
+            {{else}}
+                <li>No games available.</li>
+            {{end}}
+        </ul>
+    </div>
+
     <script src="/static/main.js"></script>
 </body>
 </html>

@@ -18,7 +18,7 @@ func main() {
 	r := chi.NewRouter()
 
 	handlers.RegisterRoutes(r)
-	r.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	r.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
 	// // Define routes
 	// r.Get("/hello", handlers.HelloHandler)
 	// r.Get("/events", handlers.EventsHandler)

@@ -13,6 +13,15 @@ type Game struct {
 	StartTime time.Time
 }
 
+// Lobby represents a game lobby.
+type Lobby struct {
+    ID      string
+    Host    string
+    Players map[string]*Player
+}
+
+var Lobbies = make(map[string]*Lobby)
+
 // Player represents a player in the game.
 type Player struct {
 	ID   string
